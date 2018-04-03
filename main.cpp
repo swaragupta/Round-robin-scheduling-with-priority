@@ -22,7 +22,7 @@
 #include <iostream>
 
 struct process{
-    int arr,burst,prior,firstt,i,status,rect,burl;
+    int arr,burst,prior,firstt,i,status,rect,burl,compt,waitingt,turnaroundt;
 }*run=NULL;
 int n,tq,tburst=0;
 struct node{
@@ -99,11 +99,13 @@ int main()
         if(run!=NULL && (time)<((run->rect)+tq) && run->status!=2)
         {
             run->burl--;
-            printf("\n process %d running ",run->i);
             if(run->burl==0)
             {
                 run->status=2;
                 pl--;
+                run->compt=(time+1);
+                run->turnaroundt=((run->compt)-(run->arr));
+                run->waitingt=((run->turnaroundt)-(run->burst));
                 run=NULL;
             }
             else if((time+1)==((run->rect)+tq))
@@ -111,11 +113,38 @@ int main()
                 cn=new node;
                 cn->q=run;
                 cn->next=NULL;
-                last->next=cn;
-                last=last->next;
+                if(start==NULL)
+                {
+                    last=cn;
+                    start=cn;
+                }
+                else{
+                    last->next=cn;
+                    last=last->next;
+                }
                 run=NULL;
             }
         }
         
     }
+    printf("\nDetails after scheduling are :");
+    printf("\n\n Details entered are following:");;
+    printf("\n _______________________________________________________________________________________________________________");
+    printf("\n|\tPROCESS\t\t|\tARRIVAL TIME\t|\tBURST TIME\t|\tPRIORITY\t|\tWAITING TIME  \t|\tTURN AROUND TIME  \t|");
+    printf("\n|_______________|___________________|_______________|_______________|___________________|_______________________|");
+    for(int i=0;i<n;i++)
+    {
+        printf("\n|\t\tP%d\t\t|\t\t%d\t\t\t|\t\t%d\t\t|\t\t%d\t\t|\t\t\t%d\t\t|\t\t\t%d\t\t\t|",p[i].i,p[i].arr,p[i].burst,p[i].prior,p[i].waitingt,p[i].turnaroundt);
+        printf("\n|_______________|___________________|_______________|_______________|___________________|_______________________|");
+    }
+    int awt=0,att=0;
+    for(int i=0;i<n;i++)
+    {
+        awt=awt+p[i].waitingt;
+        att=att+p[i].turnaroundt;
+    }
+    awt=awt/n;
+    att=att/n;
+    printf("\nAverage  waiting time = %d ",awt);
+    printf("\nAverage Turn Around Time = %d \n",att);
 }
