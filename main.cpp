@@ -49,6 +49,8 @@ int main()
         scanf("%d",&p[i].prior);
         p[i].i=i+1;
         p[i].status=0;
+        p[i].rect=-1;
+        p[i].firstt=-1;
     }
     printf("\n\n Details entered are following:");;
     printf("\n ___________________________________________________________________");
@@ -61,19 +63,17 @@ int main()
     }
     for(int time=0;pl!=0;time++)
     {
-        for(int i=0;i<n;i++)   //priority increment
+        for(int i=0;i<n;i++)                                                                    //priority increment
         {
-            if(p[i].prior>=0 && p[i].prior<300 && p[i].status==1)
+            if(time==p[i].rect+tq+5 && p[i].status==1)
             {
-                if(time==p[i].rect+10)
-                {
-                    p[i].prior++;
-                }
+                p[i].prior++;
+                printf("\nPriority of process P%d increasing by 1.",p[i].i);
             }
         }
         for(int i=0;i<n;i++)
         {
-            if(p[i].arr==time && p[i].status==0)  //in the queue
+            if(p[i].arr==time && p[i].status==0)                                                //in the queue
             {
                 if(start==NULL)
                 {
@@ -114,7 +114,7 @@ int main()
             {
                 run=start->q;
                 start=start->next;
-                if(run->firstt<0 || run->firstt>200)
+                if(run->firstt==-1)
                 {
                     run->firstt=time;
                 }
@@ -127,6 +127,7 @@ int main()
             {
                 if(run->prior < start->q->prior &&  start->q->arr == time)   //if higher priority process com in existence
                 {
+                    printf("\nContext switching happening as priority of process P%d is greater than priority of process P%d",start->q->i,run->i);
                     cn=new node;
                     cn->q=run;
                     cn->next=NULL;
