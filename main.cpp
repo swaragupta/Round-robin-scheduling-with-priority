@@ -78,11 +78,26 @@ int main()
                     p[i].status=1;
                     cn=new node;
                     cn->q=&p[i];
-                    last->next=cn;
-                    last=last->next;
+                    node *x;
+                    x=start;
+                    if((start->q->prior)<(cn->q->prior))
+                    {
+                        cn->next=start;
+                        start=cn;
+                    }
+                    else
+                    {
+                        while(x->next!=NULL && x->next->q->prior > cn->q->prior)
+                        {
+                            x=x->next;
+                        }
+                        cn->next=x->next;
+                        x->next=cn;
+                    }
                 }
             }
         }
+    qwerty:
         if(run==NULL)
         {
             if(start!=NULL)
@@ -98,7 +113,27 @@ int main()
         }
         if(run!=NULL && (time)<((run->rect)+tq) && run->status!=2)
         {
+            if(start!=NULL)
+            {
+                if(run->prior < start->q->prior &&  start->q->arr == time)
+                {
+                    cn=new node;
+                    cn->q=run;
+                    cn->next=NULL;
+                    node *x;
+                    x=start;
+                    while(x->next!=NULL && x->next->q->prior > cn->q->prior)
+                    {
+                        x=x->next;
+                    }
+                    cn->next=x->next;
+                    x->next=cn;
+                    run=NULL;
+                    goto qwerty;
+                }
+            }
             run->burl--;
+            printf("\n process %d running at time %d",run->i,time);
             if(run->burl==0)
             {
                 run->status=2;
@@ -118,14 +153,28 @@ int main()
                     last=cn;
                     start=cn;
                 }
-                else{
-                    last->next=cn;
-                    last=last->next;
+                else
+                {
+                    node *x;
+                    x=start;
+                    if((start->q->prior)<(cn->q->prior))
+                    {
+                        cn->next=start;
+                        start=cn;
+                    }
+                    else
+                    {
+                        while(x->next!=NULL && x->next->q->prior > cn->q->prior)
+                        {
+                            x=x->next;
+                        }
+                        cn->next=x->next;
+                        x->next=cn;
+                    }
+                    run=NULL;
                 }
-                run=NULL;
             }
         }
-        
     }
     printf("\nDetails after scheduling are :");
     printf("\n\n Details entered are following:");;
@@ -137,7 +186,7 @@ int main()
         printf("\n|\t\tP%d\t\t|\t\t%d\t\t\t|\t\t%d\t\t|\t\t%d\t\t|\t\t\t%d\t\t|\t\t\t%d\t\t\t|",p[i].i,p[i].arr,p[i].burst,p[i].prior,p[i].waitingt,p[i].turnaroundt);
         printf("\n|_______________|___________________|_______________|_______________|___________________|_______________________|");
     }
-    int awt=0,att=0;
+    float awt=0,att=0;
     for(int i=0;i<n;i++)
     {
         awt=awt+p[i].waitingt;
@@ -145,6 +194,6 @@ int main()
     }
     awt=awt/n;
     att=att/n;
-    printf("\nAverage  waiting time = %d ",awt);
-    printf("\nAverage Turn Around Time = %d \n",att);
+    printf("\nAverage  waiting time = %f ",awt);
+    printf("\nAverage Turn Around Time = %f \n",att);
 }
