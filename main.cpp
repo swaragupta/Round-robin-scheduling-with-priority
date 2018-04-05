@@ -65,10 +65,13 @@ int main()
     {
         for(int i=0;i<n;i++)                                                                    //priority increment
         {
-            if(time==p[i].rect+tq+5 && p[i].status==1)
+            if(p[i].rect==-1 && p[i].status==1)
             {
-                p[i].prior++;
-                printf("\nPriority of process P%d increasing by 1.",p[i].i);
+                if((time)%10==(p[i].arr)%10)
+                {
+                    p[i].prior++;
+                    printf("\nPriority of process P%d increasing by 1.",p[i].i);
+                }
             }
         }
         for(int i=0;i<n;i++)
