@@ -61,9 +61,19 @@ int main()
     }
     for(int time=0;pl!=0;time++)
     {
+        for(int i=0;i<n;i++)   //priority increment
+        {
+            if(p[i].prior>=0 && p[i].prior<300 && p[i].status==1)
+            {
+                if(time==p[i].rect+10)
+                {
+                    p[i].prior++;
+                }
+            }
+        }
         for(int i=0;i<n;i++)
         {
-            if(p[i].arr==time && p[i].status==0)
+            if(p[i].arr==time && p[i].status==0)  //in the queue
             {
                 if(start==NULL)
                 {
@@ -98,7 +108,7 @@ int main()
             }
         }
     qwerty:
-        if(run==NULL)
+        if(run==NULL)   //running of process
         {
             if(start!=NULL)
             {
@@ -115,7 +125,7 @@ int main()
         {
             if(start!=NULL)
             {
-                if(run->prior < start->q->prior &&  start->q->arr == time)
+                if(run->prior < start->q->prior &&  start->q->arr == time)   //if higher priority process com in existence
                 {
                     cn=new node;
                     cn->q=run;
@@ -134,7 +144,7 @@ int main()
             }
             run->burl--;
             printf("\n process %d running at time %d",run->i,time);
-            if(run->burl==0)
+            if(run->burl==0)                                                    //when process got completed
             {
                 run->status=2;
                 pl--;
@@ -164,7 +174,7 @@ int main()
                     }
                     else
                     {
-                        while(x->next!=NULL && x->next->q->prior > cn->q->prior)
+                        while(x->next!=NULL && x->next->q->prior >= cn->q->prior)
                         {
                             x=x->next;
                         }
@@ -176,8 +186,7 @@ int main()
             }
         }
     }
-    printf("\nDetails after scheduling are :");
-    printf("\n\n Details entered are following:");;
+    printf("\n\n\nDetails after scheduling are :");
     printf("\n _______________________________________________________________________________________________________________");
     printf("\n|\tPROCESS\t\t|\tARRIVAL TIME\t|\tBURST TIME\t|\tPRIORITY\t|\tWAITING TIME  \t|\tTURN AROUND TIME  \t|");
     printf("\n|_______________|___________________|_______________|_______________|___________________|_______________________|");
