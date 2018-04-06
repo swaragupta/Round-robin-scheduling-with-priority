@@ -71,6 +71,37 @@ int main()
                 {
                     p[i].prior++;
                     printf("\nPriority of process P%d increasing by 1.",p[i].i);
+                    node *x;
+                    x=start;
+                    while(x->next->q->i==i)
+                        x=x->next;
+                    cn=new node;
+                    cn->q=x->next->q;
+                    cn->next=NULL;
+                    x->next=x->next->next;
+                    if(start==NULL)
+                    {
+                        last=cn;
+                        start=cn;
+                    }
+                    else{
+                        node *x;
+                        x=start;
+                        if((start->q->prior)<(cn->q->prior))
+                        {
+                            cn->next=start;
+                            start=cn;
+                        }
+                        else
+                        {
+                            while(x->next!=NULL && x->next->q->prior > cn->q->prior)
+                            {
+                                x=x->next;
+                            }
+                            cn->next=x->next;
+                            x->next=cn;
+                        }
+                    }
                 }
             }
         }
